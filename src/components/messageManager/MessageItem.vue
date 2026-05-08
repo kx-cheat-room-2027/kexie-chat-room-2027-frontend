@@ -41,9 +41,9 @@ defineProps({
 }
 .main {
   display: flex;
-  padding-top: 10px;
-  margin-left: 10px;
-  margin-right: 10px;
+  padding-top: 5px;
+  margin-left: 5px;
+  margin-right: 5px;
   flex-direction: column;
 }
 .left {
@@ -60,31 +60,29 @@ defineProps({
   flex-direction: row-reverse;
 }
 .bubble-left {
-  border-radius: 0px 16px 16px 16px;
   color: black;
   background: linear-gradient(135deg, #f5f5f5, #e9e9e9);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 .bubble-right {
-  border-radius: 16px 0px 16px 16px;
   color: white;
-  background: linear-gradient(135deg, #f4a259, #e67e22);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  background: linear-gradient(135deg, #f4a259, #e4883a);
 }
 /* 气泡 */
 .bubble {
   max-width: 60%;
-  margin-left: 10px;
-  margin-right: 10px;
+  margin-left: 5px;
+  margin-right: 5px;
+  border-radius: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
   text-align: start;
-  padding: 12px 16px;
+  padding: 5px 10px;
   font-size: 14px;
 }
 
 .meta .msg-info {
   display: flex;
-  margin-left: 10px;
-  margin-right: 10px;
+  margin-left: 5px;
+  margin-right: 5px;
   max-width: 50%;
 }
 /* 信息 */

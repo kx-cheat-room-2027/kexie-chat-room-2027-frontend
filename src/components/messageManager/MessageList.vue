@@ -23,4 +23,17 @@ defineProps({
   padding: 20px;
   overflow-y: auto;
 }
+::-webkit-scrollbar {
+  width: 7px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #fe9a1a;
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #e88910;
+}
 </style>

@@ -28,12 +28,13 @@ const { messages, sendMessage } = useMessage()
 
 .header {
   display: flex;
+  height: 3%;
   padding: 16px;
   font-weight: bold;
   background: #f5e7d6;
 }
 .header p {
   align-self: start;
-  color: #48302b;
+  color: #4e342e;
 }
 </style>
