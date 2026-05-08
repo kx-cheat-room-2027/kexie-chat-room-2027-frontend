@@ -10,7 +10,7 @@
       <Sidebar />
       <!-- 聊天页面 -->
        <!-- ChatMiddle为zgq负责部分 -->
-      <ChatMiddle />
+      <MessageContainer />
       <UserPanel />
     </div>
   </div>
@@ -22,6 +22,7 @@ import Sidebar from './components/Sidebar.vue'
 import UserPanel from './components/UserPanel.vue'
 import ChatMiddle from './components/ChatMiddle.vue'
 import MobileChatPage from './components/MobileChatPage.vue'
+import MessageContainer from './components/messageManager/MessageContainer.vue'
 
 const mobileQuery = window.matchMedia('(max-width: 768px)')
 const isMobile = ref(mobileQuery.matches)
@@ -39,6 +40,13 @@ onUnmounted(() => {
   mobileQuery.removeEventListener('change', checkMobile)
 })
 </script>
+
+<style>
+body {
+  margin: 0;
+  background: #fff8f0;
+}
+</style>
 
 <style scoped>
 .app-container {
