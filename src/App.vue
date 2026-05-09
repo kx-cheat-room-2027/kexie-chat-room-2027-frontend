@@ -1,5 +1,8 @@
 <template>
-  <div class="app-container">
+
+  <router-view v-if="isAuthPage"/>
+
+  <div v-else class="app-container">
     <!-- 移动端 -->
     <div v-if="isMobile" class="mobile-container">
       <MobileChatPage />
@@ -17,12 +20,15 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue'
-import Sidebar from './components/Sidebar.vue'
-import UserPanel from './components/UserPanel.vue'
-import ChatMiddle from './components/ChatMiddle.vue'
-import MobileChatPage from './components/MobileChatPage.vue'
+import { computed, ref, onMounted, onUnmounted } from 'vue'
+import { useRoute } from 'vue-router'
+import Sidebar from './components/Sidebar/Sidebar.vue'
+import UserPanel from './components/Sidebar/UserPanel.vue'
+import MobileChatPage from './components/Sidebar/MobileChatPage.vue'
 import MessageContainer from './components/messageManager/MessageContainer.vue'
+  
+const route = useRoute()
+const isAuthPage = computed(() => ['/login', '/register'].includes(route.path))
 
 const mobileQuery = window.matchMedia('(max-width: 768px)')
 const isMobile = ref(mobileQuery.matches)
@@ -45,6 +51,21 @@ onUnmounted(() => {
 body {
   margin: 0;
   background: #fff8f0;
+}
+  
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  /* background-color: #f3f2f2; */
+}
+
+  
+#app {
+  height: 100%;
+  width: 100%;
 }
 </style>
 
@@ -72,3 +93,4 @@ body {
   z-index: 1000;
 }
 </style>
+
