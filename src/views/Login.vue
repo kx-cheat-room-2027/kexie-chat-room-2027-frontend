@@ -89,6 +89,8 @@ import { ElMessage } from 'element-plus'
 import { Message, Lock } from '@element-plus/icons-vue'
 import { login } from '@/api/user'
 import router from '@/router'
+import { useAuthStore } from '@/stores/auth'
+const authStore = useAuthStore()
 
 const MessageIcon = Message
 const LockIcon = Lock
@@ -112,30 +114,45 @@ const rules = {
   ]
 }
 
+// async function handleSubmit() {
+//   if (!formRef.value) return
+
+//   await formRef.value.validate(async (valid, fields) => {
+//     if (valid) {
+//       ElMessage.success('登录成功')
+//       console.log('登录信息：', form)
+//       // TODO: 调用登录API
+//       try {
+//         const res = await login({
+//           account:form.email,
+//           password:form.password
+//         })
+//         if(res.code === 0) {
+//           ElMessage.success('登录成功')
+//           localStorage.setItem('user_token', res.data.token)
+//           router.push('/chat')
+//         }
+//       } catch (error) {
+//         ElMessage.error(error.message)
+//       }
+//     } else {
+//       ElMessage.error('请检查表单输入')
+//       console.log('验证失败:', fields)
+//     }
+//   })
+// }
+
 async function handleSubmit() {
   if (!formRef.value) return
-
-  await formRef.value.validate(async (valid, fields) => {
+  await formRef.value.validate((valid) => {
     if (valid) {
-      ElMessage.success('登录成功')
-      console.log('登录信息：', form)
-      // TODO: 调用登录API
-      try {
-        const res = await login({
-          account:form.email,
-          password:form.password
-        })
-        if(res.code === 0) {
-          ElMessage.success('登录成功')
-          localStorage.setItem('user_token', res.data.token)
-          router.push('/')
-        }
-      } catch (error) {
-        ElMessage.error(error.message)
+      const res = authStore.login(form.email, form.password)
+      if (res.success) {
+        ElMessage.success('登录成功')
+        router.push('/chat')
+      } else {
+        ElMessage.error(res.message || '登录失败')
       }
-    } else {
-      ElMessage.error('请检查表单输入')
-      console.log('验证失败:', fields)
     }
   })
 }
