@@ -91,9 +91,9 @@
   display: flex;
   flex-direction: column;
   background: rgba(255, 239, 213, 1);
-box-shadow: -20px -20px 60px 0px rgba(255, 255, 255, 1);
+  box-shadow: -20px -20px 60px 0px rgba(255, 255, 255, 1);
 
-/* box-shadow: 20px 20px 60px 0px rgba(210, 209, 209, 1); */
+  /* box-shadow: 20px 20px 60px 0px rgba(210, 209, 209, 1); */
 
   /* box-shadow:
     8px 8px 28px rgba(139, 115, 85, 0.12),
@@ -138,7 +138,7 @@ box-shadow: -20px -20px 60px 0px rgba(255, 255, 255, 1);
 
 :deep(.el-form-item__label) {
   /* background: rgba(240, 241, 241, 1); */
-/*  */
+  /*  */
   text-align: left;
   justify-content: flex-start;
   padding: 0 0 6px 4px;
@@ -146,14 +146,10 @@ box-shadow: -20px -20px 60px 0px rgba(255, 255, 255, 1);
 
 :deep(.el-form-item__content) {
   background: rgba(240, 241, 241, 1);
-    
-border-radius: 20px; 
-  /* 确保阴影不会溢出直角 */
-  /* overflow: hidden;  */
 
+  border-radius: 20px;
   box-shadow: -8px -8px 16px 0px rgba(255, 255, 255, 1) inset;
- box-shadow: 8px 8px 16px 0px rgba(217, 218, 218, 1) inset;
-
+  box-shadow: 8px 8px 16px 0px rgba(217, 218, 218, 1) inset;
   display: block;
 }
 
@@ -237,12 +233,12 @@ border-radius: 20px;
   transition: all 0.2s;
 }
 
-.remember input:checked + .checkmark {
+.remember input:checked+.checkmark {
   background: linear-gradient(135deg, #e8a87c 0%, #d4a373 100%);
   box-shadow: 0 2px 6px rgba(212, 163, 115, 0.3);
 }
 
-.remember input:checked + .checkmark::after {
+.remember input:checked+.checkmark::after {
   content: '';
   width: 5px;
   height: 8px;
