@@ -7,10 +7,12 @@ import { useMessage } from './useMessage'
 const { messages, sendMessage } = useMessage()
 </script>
 
+
+
 <template>
   <div class="chat">
     <div class="header">
-      <p>聊天室</p>
+      <div>聊天室</div>
     </div>
 
     <MessageList :messages="messages" />
@@ -28,13 +30,14 @@ const { messages, sendMessage } = useMessage()
 
 .header {
   display: flex;
-  height: 3%;
-  padding: 16px;
+  height: 5%;
   font-weight: bold;
   background: #f5e7d6;
+  align-items: center;
 }
-.header p {
-  align-self: start;
+
+.header div {
+  margin-left: 3%;
   color: #4e342e;
 }
 </style>

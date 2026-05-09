@@ -8,27 +8,29 @@
         <h3 class="user-title">{{ user.name }}</h3>
       </div>
     </div>
-    
+
     <div class="panel-section">
       <div class="section-title">聊天设置</div>
-      
+
       <div class="setting-item">
         <div class="setting-icon">🔔</div>
         <span class="setting-label">消息提醒</span>
-        <button 
+        <button
           :class="['toggle-btn', { active: settings.notifications }]"
-          @click="settings.notifications = !settings.notifications">
+          @click="settings.notifications = !settings.notifications"
+        >
           <span class="toggle-track"></span>
           <span class="toggle-thumb"></span>
         </button>
       </div>
-      
+
       <div class="setting-item">
         <div class="setting-icon">🚫</div>
         <span class="setting-label">加入黑名单</span>
-        <button 
+        <button
           :class="['toggle-btn', { active: settings.blocked }]"
-          @click="settings.blocked = !settings.blocked">
+          @click="settings.blocked = !settings.blocked"
+        >
           <span class="toggle-track"></span>
           <span class="toggle-thumb"></span>
         </button>
@@ -38,16 +40,16 @@
 </template>
 
 <script setup>
-import { reactive } from 'vue'
+import { reactive } from "vue";
 
 const user = {
-  name: '用户名'
-}
+  name: "用户名",
+};
 
 const settings = reactive({
   notifications: true,
-  blocked: false
-})
+  blocked: false,
+});
 </script>
 
 <style scoped>
@@ -55,7 +57,7 @@ const settings = reactive({
   width: clamp(220px, 20vw, 300px);
   min-width: 220px;
   height: 100vh;
-  background: #FFEFD5;
+  background: #ffefd5;
   display: flex;
   flex-direction: column;
   padding: 32px 24px;
@@ -74,7 +76,8 @@ const settings = reactive({
   width: 100px;
   height: 100px;
   border-radius: 50%;
-  background: #E8DDC8;
+  background: rgba(240, 241, 241, 1);
+  box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.08) inset;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -83,7 +86,7 @@ const settings = reactive({
 
 .avatar-icon {
   font-size: 40px;
-  color: #B5A88E;
+  color: #b5a88e;
 }
 
 .avatar-camera {
@@ -93,12 +96,12 @@ const settings = reactive({
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  background: #E8DDC8;
+  background: #e8ddc8;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 14px;
-  color: #B5A88E;
+  color: #b5a88e;
 }
 
 .user-info {
@@ -108,7 +111,7 @@ const settings = reactive({
 .user-title {
   font-size: 18px;
   font-weight: 600;
-  color: #5D4E37;
+  color: #5d4e37;
   margin-bottom: 2px;
 }
 
@@ -122,7 +125,7 @@ const settings = reactive({
 .section-title {
   font-size: 12px;
   font-weight: 600;
-  color: #8B7B5E;
+  color: #8b7b5e;
   text-transform: uppercase;
   letter-spacing: 1px;
   margin-bottom: 8px;
@@ -134,7 +137,8 @@ const settings = reactive({
   gap: 12px;
   padding: 12px 15px;
   border-radius: 12px;
-  background: rgba(255, 255, 255, 0.8);
+  background: rgba(240, 241, 241, 1);
+  box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.08) inset;
   transition: all 0.3s ease;
 }
 
@@ -146,15 +150,15 @@ const settings = reactive({
 .setting-label {
   flex: 1;
   font-size: 14px;
-  color: #5D4E37;
+  color: #5d4e37;
   font-weight: 500;
 }
 
 .toggle-btn {
-  width: 50px;
-  height: 28px;
+  width: 40px;
+  height: 18px;
   border-radius: 14px;
-  background: #D4C9A8;
+  background: rgba(203, 213, 225, 1);
   border: none;
   cursor: pointer;
   position: relative;
@@ -165,7 +169,7 @@ const settings = reactive({
 }
 
 .toggle-btn.active {
-  background: #D99E59;
+  background: linear-gradient(135deg, #ffbc67 0%, #da7a2d 100%);
 }
 
 .toggle-track {
@@ -176,8 +180,8 @@ const settings = reactive({
 }
 
 .toggle-thumb {
-  width: 22px;
-  height: 22px;
+  width: 10px;
+  height: 10px;
   border-radius: 50%;
   background: white;
   position: relative;
