@@ -11,6 +11,7 @@ html, body {
   padding: 0;
   height: 100%;
   width: 100%;
+  overflow: hidden;
   /* background-color: #f3f2f2; */
 }
 
