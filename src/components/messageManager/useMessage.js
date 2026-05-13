@@ -44,12 +44,50 @@ export function useMessage() {
         })
     }
 
+    function createNewMessage(text) {
+        messages.value.push({
+        id: Date.now(),
+        content: text,
+        self: false,
+        username: "对方",
+        time: new Date().toLocaleTimeString()
+    })
+    }
+
+    async function createHistoryMessages() {
+    return new Promise((resolve) => {
+        setTimeout(() => {
+
+            const historyMessages = [
+                {
+                    id: Date.now() + 1,
+                    content: "历史消息1",
+                    self: false,
+                    username: "历史用户",
+                    time: "09:00AM"
+                },
+                {
+                    id: Date.now() + 2,
+                    content: "历史消息2",
+                    self: true,
+                    username: "我",
+                    time: "09:01AM"
+                }
+            ]
+
+            resolve(historyMessages)
+
+        }, 500)
+    })
+}
     onMounted(() => {
         loadMockData()
     })
 
     return {
         messages,
-        sendMessage
+        sendMessage,
+         createNewMessage,
+    createHistoryMessages
     }
 }

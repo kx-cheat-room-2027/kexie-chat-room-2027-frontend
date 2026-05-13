@@ -20,7 +20,6 @@
 import { ref, onMounted, onUnmounted } from 'vue'
 import Sidebar from './components/Sidebar.vue'
 import UserPanel from './components/UserPanel.vue'
-import ChatMiddle from './components/ChatMiddle.vue'
 import MobileChatPage from './components/MobileChatPage.vue'
 import MessageContainer from './components/messageManager/MessageContainer.vue'
 
