@@ -2,7 +2,7 @@
 <script setup>
 import MessageList from './MessageList.vue'
 import MessageInput from './MessageInput.vue'
-import { useMessage } from './useMessage'
+import { useMessage } from '@/mock/useMessage.js'
 
 const { messages, sendMessage } = useMessage()
 </script>
