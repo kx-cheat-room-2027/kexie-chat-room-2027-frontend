@@ -11,7 +11,7 @@ export function loadMockData() {
         {
             id: '001',
             name: '大厅',
-            avatar: '我是头像.jpg',
+            avatar: 'https://picsum.photos/200/200',
             lastMessage: '厉害2333333',
             lastTime: '1654684846',
             unreadCount: 2,
@@ -21,7 +21,7 @@ export function loadMockData() {
         {
             id: '002',
             name: '聊天室2号',
-            avatar: '我是头像.jpg',
+            avatar: 'https://picsum.photos/200/200',
             lastMessage: '何意味？？',
             lastTime: '641468468541',
             unreadCount: 5,
@@ -31,7 +31,7 @@ export function loadMockData() {
         {
             id: '003',
             name: '聊天室3号',
-            avatar: '我是头像.jpg',
+            avatar: 'https://picsum.photos/200/200',
             lastMessage: '阿瓦达挖法二发额发',
             lastTime: '15641685151',
             unreadCount: 2,
@@ -42,7 +42,7 @@ export function loadMockData() {
         {
             id: '004',
             name: '朋友',
-            avatar: '我是头像.jpg',
+            avatar: 'https://picsum.photos/200/200',
             lastMessage: '你吃饭了吗',
             lastTime: '114514',
             unreadCount: 1,
@@ -52,7 +52,7 @@ export function loadMockData() {
         {
             id: '005',
             name: '朋友2',
-            avatar: '我是头像.jpg',
+            avatar: 'https://picsum.photos/200/200',
             lastMessage: '你晚上吃饭了吗',
             lastTime: '114514',
             unreadCount: 1,
