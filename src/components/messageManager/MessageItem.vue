@@ -1,8 +1,8 @@
 <!--单条消息-->
 <script setup>
 defineProps({
-  msg: Object
-})
+  msg: Object,
+});
 </script>
 
 <template>
@@ -10,7 +10,7 @@ defineProps({
     <div class="row">
       <div class="avatar">
         <span>{{ msg.username }}</span>
-        <img src="https://picsum.photos/200/200" alt="">
+        <img src="https://picsum.photos/200/200" alt="" />
       </div>
       <div class="main" :class="msg.self ? 'right' : 'left'">
         <div class="bubble" :class="msg.self ? 'bubble-right' : 'bubble-left'">
@@ -31,15 +31,18 @@ defineProps({
 <style scoped>
 .wrapper {
   margin-bottom: 20px;
+  width: 100%;
   display: flex;
   flex-direction: column;
 }
 .wrapper .row {
+  width: 100%;
   display: flex;
   align-items: flex-start;
   flex-direction: row;
 }
 .main {
+  width: 100%;
   display: flex;
   padding-top: 5px;
   margin-left: 5px;
@@ -69,7 +72,7 @@ defineProps({
 }
 /* 气泡 */
 .bubble {
-  max-width: 60%;
+  max-width: 40%;
   margin-left: 5px;
   margin-right: 5px;
   border-radius: 16px;
@@ -77,6 +80,8 @@ defineProps({
   text-align: start;
   padding: 5px 10px;
   font-size: 14px;
+  display: flex;
+  flex-direction: row;
 }
 
 .meta .msg-info {
@@ -93,7 +98,7 @@ defineProps({
   text-align: end;
 }
 .meta .msg-info .info h2,
-.meta .msg-info .info p{
+.meta .msg-info .info p {
   font-size: 12px;
   color: #666;
   margin-top: 4px;

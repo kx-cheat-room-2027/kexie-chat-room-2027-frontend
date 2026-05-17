@@ -6,10 +6,10 @@
         <span class="logo-status">ACTIVE NOW</span>
       </div>
     </div>
-    
+
     <nav class="sidebar-nav">
-      <button 
-        v-for="item in navItems" 
+      <button
+        v-for="item in navItems"
         :key="item.id"
         :class="['nav-item', { active: activeNav === item.id }]"
         @click="handleNavClick(item.id)"
@@ -22,21 +22,21 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref } from "vue";
 
-const emit = defineEmits(['navChange'])
+const emit = defineEmits(["navChange"]);
 
-const activeNav = ref('chatroom')
+const activeNav = ref("chatroom");
 
 const navItems = [
-  { id: 'chatroom', icon: '👥', text: '聊天室' },
-  { id: 'friends', icon: '👤', text: '好友' }
-]
+  { id: "chatroom", icon: "👥", text: "聊天室" },
+  { id: "friends", icon: "👤", text: "好友" },
+];
 
 const handleNavClick = (id) => {
-  activeNav.value = id
-  emit('navChange', id)
-}
+  activeNav.value = id;
+  emit("navChange", id);
+};
 </script>
 
 <style scoped>
@@ -44,7 +44,7 @@ const handleNavClick = (id) => {
   width: clamp(220px, 22vw, 320px);
   min-width: 220px;
   height: 100vh;
-  background: #FFEFD5;
+  background: #ffefd5;
   display: flex;
   flex-direction: column;
   padding: 32px 24px;
@@ -64,13 +64,13 @@ const handleNavClick = (id) => {
 .logo-text {
   font-size: 24px;
   font-weight: 700;
-  color: #5D4E37;
+  color: #5d4e37;
   letter-spacing: -0.5px;
 }
 
 .logo-status {
   font-size: 10px;
-  color: #8B7B5E;
+  color: #8b7b5e;
   margin-top: 2px;
   text-transform: uppercase;
   letter-spacing: 1px;
@@ -96,7 +96,7 @@ const handleNavClick = (id) => {
   cursor: pointer;
   transition: all 0.3s ease;
   font-size: 14px;
-  color: #5D4E37;
+  color: #5d4e37;
   text-align: left;
 }
 
@@ -105,7 +105,7 @@ const handleNavClick = (id) => {
 }
 
 .nav-item.active {
-  background: linear-gradient(135deg, #D99E59 0%, #C48843 100%);
+  background: linear-gradient(135deg, #ffbc67 0%, #da7a2d 100%);
   color: white;
   box-shadow: 0 4px 15px rgba(217, 158, 89, 0.4);
 }

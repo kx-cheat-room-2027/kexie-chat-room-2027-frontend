@@ -1,15 +1,17 @@
-<template>
-  <div class="app-container">
-    <!-- 移动端 -->
+<!-- <template>
+
+  <router-view v-if="isAuthPage"/>
+
+  <div v-else class="app-container">
+
     <div v-if="isMobile" class="mobile-container">
       <MobileChatPage />
     </div>
 
-    <!-- PC端 -->
+
     <div v-else class="desktop-container">
       <Sidebar />
-      <!-- 聊天页面 -->
-       <!-- ChatMiddle为zgq负责部分 -->
+
       <MessageContainer />
       <UserPanel />
     </div>
@@ -20,8 +22,12 @@
 import { ref, onMounted, onUnmounted } from 'vue'
 import Sidebar from './components/Sidebar.vue'
 import UserPanel from './components/UserPanel.vue'
+import ChatMiddle from './components/ChatMiddle.vue'
 import MobileChatPage from './components/MobileChatPage.vue'
 import MessageContainer from './components/messageManager/MessageContainer.vue'
+  
+const route = useRoute()
+const isAuthPage = computed(() => ['/login', '/register'].includes(route.path))
 
 const mobileQuery = window.matchMedia('(max-width: 768px)')
 const isMobile = ref(mobileQuery.matches)
@@ -44,6 +50,20 @@ onUnmounted(() => {
 body {
   margin: 0;
   background: #fff8f0;
+}
+  
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+}
+
+  
+#app {
+  height: 100%;
+  width: 100%;
 }
 </style>
 
@@ -71,3 +91,28 @@ body {
   z-index: 1000;
 }
 </style>
+ -->
+
+
+ <template>
+  <!-- 登录/注册页：裸路由视图，无布局 -->
+  <router-view v-if="isAuthPage" />
+
+  <!-- 其他页面：用 MainLayout 包裹 -->
+  <MainLayout v-else>
+    <router-view />
+  </MainLayout>
+</template>
+
+<script setup>
+import { computed } from 'vue'
+import { useRoute } from 'vue-router'
+import MainLayout from '@/layouts/MainLayout.vue'
+
+const route = useRoute()
+
+// 判断当前是否在登录注册页
+const isAuthPage = computed(() => {
+  return ['/login', '/register'].includes(route.path)
+})
+</script>
