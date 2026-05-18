@@ -19,11 +19,11 @@
 </template>
 
 <script setup>
-import { computed, ref, onMounted, onUnmounted } from 'vue'
-import { useRoute } from 'vue-router'
-import Sidebar from './components/Sidebar/Sidebar.vue'
-import UserPanel from './components/Sidebar/UserPanel.vue'
-import MobileChatPage from './components/Sidebar/MobileChatPage.vue'
+import { ref, onMounted, onUnmounted } from 'vue'
+import Sidebar from './components/Sidebar.vue'
+import UserPanel from './components/UserPanel.vue'
+import ChatMiddle from './components/ChatMiddle.vue'
+import MobileChatPage from './components/MobileChatPage.vue'
 import MessageContainer from './components/messageManager/MessageContainer.vue'
   
 const route = useRoute()
