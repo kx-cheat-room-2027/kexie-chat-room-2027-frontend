@@ -1,7 +1,7 @@
 <!--消息列表-->
 <script setup>
 import MessageItem from './MessageItem.vue'
-import {useMessage} from './useMessage'
+import {useMessage} from '@/mock/useMessage'
 import { ref, nextTick } from 'vue'
 
 
