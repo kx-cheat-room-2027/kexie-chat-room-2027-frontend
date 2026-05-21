@@ -36,9 +36,15 @@ const routes = [
     component: isMobileDevice() ? MobileRegister : PcRegister,
   },
   {
-    path: "/chat",
+    path: "/chat/:id?",
     name: "Chat",
     component: () => import("@/views/ChatView.vue"),
+    meta: { requiresAuth: true },
+  },
+  {
+    path: "/chat/profile",
+    name: "Profile",
+    component: () => import("@/views/ProfileView.vue"),
     meta: { requiresAuth: true },
   },
   {

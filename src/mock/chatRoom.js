@@ -1,3 +1,4 @@
+
 // src/mock/chatRooms.js
 import { ref } from 'vue'
 

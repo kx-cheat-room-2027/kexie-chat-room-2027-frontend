@@ -1,3 +1,4 @@
+
 import { ref, onMounted } from "vue";
 
 const messages = ref([]);
@@ -193,3 +194,4 @@ export function useMessage() {
     createHistoryMessages,
   };
 }
+
