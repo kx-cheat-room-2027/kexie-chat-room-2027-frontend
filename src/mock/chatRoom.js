@@ -1,4 +1,4 @@
-// src/mock/chatRooms.js
+// src/mock/chatRoom.js
 import { ref } from 'vue'
 
 /** 响应式聊天室数组 */
