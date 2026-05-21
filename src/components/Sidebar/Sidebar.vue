@@ -55,9 +55,12 @@
 <script setup>
 import { ref, onMounted, computed, watch } from "vue";
 import { useRouter, useRoute } from "vue-router";
-import { getSessionList } from "@/api/chat";
 import { useAuthStore } from "@/stores/auth";
 import { useSettingsStore } from "@/stores/settings";
+
+async function getSessionList() {
+  return [];
+}
 
 const emit = defineEmits(["navChange", "roomSelect"]);
 
