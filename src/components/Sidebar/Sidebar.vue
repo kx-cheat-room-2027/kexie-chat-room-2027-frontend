@@ -81,8 +81,7 @@ const loading = ref(false);
 
 // 当前选中的房间ID
 const currentRoomId = computed(() => {
-  const id = parseInt(route.params.id, 10);
-  return isNaN(id) ? null : id;
+  return route.params.id != null ? String(route.params.id) : null;
 });
 
 const fetchSessionData = async () => {
