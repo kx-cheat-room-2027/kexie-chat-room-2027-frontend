@@ -8,6 +8,14 @@ export const useAuthStore = defineStore("auth", () => {
   console.log(token.value);
   const userInfo = ref(JSON.parse(localStorage.getItem("userInfo") || "null"));
 
+  /** 更新用户信息（头像、简介等） */
+  function updateUserInfo(updates) {
+    if (userInfo.value) {
+      Object.assign(userInfo.value, updates);
+      localStorage.setItem("userInfo", JSON.stringify(userInfo.value));
+    }
+  }
+
   const isLoggedIn = computed(() => !!token.value);
 
   // 登录：验证假数据
@@ -40,5 +48,5 @@ export const useAuthStore = defineStore("auth", () => {
     localStorage.removeItem("userInfo");
   }
 
-  return { token, isLoggedIn, userInfo, login, logout, register };
+  return { token, isLoggedIn, userInfo, login, logout, register, updateUserInfo };
 });

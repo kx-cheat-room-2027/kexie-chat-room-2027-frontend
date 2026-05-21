@@ -1,8 +1,11 @@
 <template>
   <div class="app-container">
     <!-- 移动端 -->
-    <div v-if="isMobile" class="mobile-container">
+    <div v-if="isMobile && !isProfilePage" class="mobile-container">
       <MobileChatPage />
+    </div>
+    <div v-else-if="isMobile && isProfilePage" class="mobile-profile-container">
+      <slot />
     </div>
 
     <!-- PC端 -->
@@ -13,19 +16,23 @@
       <div class="main-content">
         <slot />
       </div>
-      
-      <UserPanel />
+      <UserPanel v-if="isUserPanelOpen && route.path !== '/chat/profile'" />
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue'
-import MobileChatPage from '@/components/Sidebar/MobileChatPage.vue'
-import Sidebar from '@/components/Sidebar/Sidebar.vue'
-import UserPanel from '@/components/Sidebar/UserPanel.vue'
+import { ref, computed, onMounted, onUnmounted, provide } from 'vue'
+import { useRoute } from 'vue-router'
+import { MobileChatPage, Sidebar, UserPanel } from '@/components/Sidebar'
 
+const route = useRoute()
 const isMobile = ref(false)
+const isUserPanelOpen = ref(false)
+
+provide('isUserPanelOpen', isUserPanelOpen)
+
+const isProfilePage = computed(() => route.path === '/chat/profile')
 
 function checkMobile() {
   isMobile.value = window.innerWidth < 768
@@ -60,5 +67,11 @@ onUnmounted(() => {
 .mobile-container {
   height: 100vh;
   overflow-y: auto;
+}
+
+.mobile-profile-container {
+  height: 100vh;
+  overflow-y: auto;
+  background: #fff8f0;
 }
 </style>
