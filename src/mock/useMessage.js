@@ -26,98 +26,98 @@ export function useMessage() {
                 username: "神秘人"
             },
             {
-                id: 3,
+                id: 4,
                 content: "傻",
                 self: false,
                 time: "11:15AM",
                 username: "大纱布"
             },
             {
-                id: 3,
+                id: 5,
                 content: "傻",
                 self: false,
                 time: "11:15AM",
                 username: "大纱布"
             },
             {
-                id: 3,
+                id: 6,
                 content: "傻",
                 self: false,
                 time: "11:15AM",
                 username: "大纱布"
             },
             {
-                id: 3,
+                id: 7,
                 content: "傻",
                 self: false,
                 time: "11:15AM",
                 username: "大纱布"
             },
             {
-                id: 3,
+                id: 8,
                 content: "傻",
                 self: false,
                 time: "11:15AM",
                 username: "大纱布"
             },
             {
-                id: 3,
+                id: 9,
                 content: "傻",
                 self: false,
                 time: "11:15AM",
                 username: "大纱布"
             },
             {
-                id: 3,
+                id: 10,
                 content: "傻",
                 self: false,
                 time: "11:15AM",
                 username: "大纱布"
             },
             {
-                id: 3,
+                id: 11,
                 content: "傻",
                 self: false,
                 time: "11:15AM",
                 username: "大纱布"
             },
             {
-                id: 3,
+                id: 12,
                 content: "傻",
                 self: false,
                 time: "11:15AM",
                 username: "大纱布"
             },
             {
-                id: 3,
+                id: 13,
                 content: "傻",
                 self: false,
                 time: "11:15AM",
                 username: "大纱布"
             },
             {
-                id: 3,
+                id: 14,
                 content: "傻",
                 self: false,
                 time: "11:15AM",
                 username: "大纱布"
             },
             {
-                id: 3,
+                id: 15,
                 content: "傻",
                 self: false,
                 time: "11:15AM",
                 username: "大纱布"
             },
             {
-                id: 3,
+                id: 16,
                 content: "傻",
                 self: false,
                 time: "11:15AM",
                 username: "大纱布"
             },
             {
-                id: 3,
+                id: 17,
                 content: "傻",
                 self: false,
                 time: "11:15AM",
