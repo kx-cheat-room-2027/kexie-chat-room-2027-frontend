@@ -1,8 +1,9 @@
 <!--单条消息-->
 <script setup>
-defineProps({
+const props =defineProps({
   msg: Object,
 });
+
 </script>
 
 <template>

@@ -10,7 +10,7 @@
           </p>
         </div>
         <div class="illustration-wrap">
-          <img src="../assets/login-figure.jpg" alt="插画" class="illustration-img" />
+          <img src="../../assets/login-figure.jpg" alt="插画" class="illustration-img" />
         </div>
       </div>
 

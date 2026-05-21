@@ -1,4 +1,5 @@
-<template>
+
+ <template>
   <!-- 登录/注册页：裸路由视图，无布局 -->
   <router-view v-if="isAuthPage" />
 
