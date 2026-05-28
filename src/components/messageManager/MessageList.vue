@@ -1,17 +1,19 @@
 <!--消息列表-->
 <script setup>
 import MessageItem from "./MessageItem.vue";
-import { useMessage } from "@/mock/useMessage";
-import { ref, nextTick } from "vue";
+import { useChatStore } from "@/stores/chat";
+import { ref, nextTick, computed, onMounted } from "vue";
+
+const chatStore = useChatStore();
+const messages = computed(() => chatStore.sortedMessages);
 
 const messageList = ref(null);
 const SCROLL_THRESHOLD = 100;
-const loading = ref(false);
+const loading = computed(() => chatStore.loading);
 const noMoreHistory = ref(false);
 const isAtBottom = ref(true);
 const newMessageCount = ref(0);
-const { messages, createHistoryMessages, createNewMessage, sendMessage } =
-  useMessage();
+const currentPage = ref(1);
 
 function onScroll() {
   if (!messageList.value) return;
@@ -25,29 +27,22 @@ function onScroll() {
 async function loadMoreHistory() {
   if (loading.value || noMoreHistory.value) return;
 
-  loading.value = true;
-
   const prevScrollHeight = messageList.value.scrollHeight;
 
-  const historyMessages = await createHistoryMessages();
+  currentPage.value++;
+  const prevLength = messages.value.length;
+  await chatStore.loadHistory(currentPage.value, 20);
 
-  if (historyMessages.length === 0) {
+  if (messages.value.length === prevLength) {
     noMoreHistory.value = true;
   } else {
-    messages.value.unshift(...historyMessages);
-
     await nextTick();
-
     const newScrollHeight = messageList.value.scrollHeight;
-
     messageList.value.scrollTop += newScrollHeight - prevScrollHeight;
   }
-
-  loading.value = false;
 }
 
-function receiveNewMessage(text) {
-  createNewMessage(text);
+function receiveNewMessage(msg) {
   if (isAtBottom.value) {
     nextTick(() => {
       scrollToBottom();
@@ -57,25 +52,24 @@ function receiveNewMessage(text) {
   }
 }
 
-async function fetchHistoryMessages() {
-  // 模拟接口返回数据，真实项目替换成接口请求
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve([{ id: Date.now(), text: "历史消息" }]);
-    }, 500);
-  });
-}
-
 function scrollToBottom() {
   const el = messageList.value;
-  el.scrollTop = el.scrollHeight;
-  newMessageCount.value = 0;
+  if (el) {
+    el.scrollTop = el.scrollHeight;
+    newMessageCount.value = 0;
+  }
 }
+
+onMounted(() => {
+  nextTick(() => {
+    scrollToBottom();
+  });
+});
 </script>
 
 <template>
-  <div v-if="loading" class="loading-top">加载中...</div>
-  <div v-else-if="noMoreHistory" class="loading-top">没有更多消息</div>
+  <div v-if="loading && messages.length === 0" class="loading-top">加载中...</div>
+  <div v-else-if="noMoreHistory && messages.length > 0" class="loading-top">没有更多消息</div>
   <div class="list" ref="messageList" @scroll="onScroll">
     <MessageItem v-for="msg in messages" :key="msg.id" :msg="msg" />
   </div>
@@ -108,5 +102,23 @@ function scrollToBottom() {
 }
 ::-webkit-scrollbar-thumb:hover {
   background: #e88910;
+}
+.loading-top {
+  text-align: center;
+  padding: 10px;
+  color: #999;
+  font-size: 12px;
+}
+.new-message-tip {
+  position: absolute;
+  bottom: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #fe9a1a;
+  color: white;
+  padding: 5px 15px;
+  border-radius: 15px;
+  cursor: pointer;
+  font-size: 12px;
 }
 </style>

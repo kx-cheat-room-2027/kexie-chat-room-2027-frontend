@@ -7,11 +7,7 @@ import 'element-plus/dist/index.css'
 import { createPinia } from "pinia";
 
 const app = createApp(App)
-const pinia = createPinia()
+app.use(createPinia())  // Pinia 必须在 mount 之前注册
 app.use(ElementPlus)
 app.use(router)
-app.use(pinia)
 app.mount('#app')
-
-
-
