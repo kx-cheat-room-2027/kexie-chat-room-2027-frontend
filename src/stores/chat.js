@@ -38,7 +38,9 @@ export const useChatStore = defineStore('chat', () => {
     }
 
     ws.onMessage = (message) => {
-      handleIncomingMessage(message)
+        if (message.type === 'msg') {
+            handleIncomingMessage(message)
+        }
     }
 
     ws.onClose = () => {
@@ -62,18 +64,25 @@ export const useChatStore = defineStore('chat', () => {
     isConnected.value = false
   }
 
-  function handleIncomingMessage(msg) {
+  function handleIncomingMessage(rawMsg) {
+    console.log('[WS] 收到原始消息:', JSON.stringify(rawMsg))
+    
+    // 后端 WS 格式：{ type: 'msg', content: { id, msgContent: {...} } }
+    const msg = rawMsg.content || rawMsg
+    
     const formattedMsg = {
       id: msg.id || Date.now().toString(),
-      content: msg.content || msg.msgContent?.content || '',
-      type: msg.type || msg.msgContent?.type || 'text',
+      content: msg.msgContent?.content || '',
+      type: msg.msgContent?.type || 'text',
       self: false,
-      username: msg.fromName || '未知用户',
+      username: msg.msgContent?.formUserName || '未知用户',
       fromId: msg.fromId || '',
       time: formatTime(msg.createTime),
       createTime: msg.createTime,
       isShowTime: msg.isShowTime ?? true
     }
+    
+    console.log('[WS] 格式化后:', formattedMsg)
 
     const exists = messages.value.some(m => m.id === formattedMsg.id)
     if (!exists) {
@@ -142,7 +151,7 @@ export const useChatStore = defineStore('chat', () => {
           id: msg.id,
           content: msg.msgContent?.content || msg.content || '',
           type: msg.msgContent?.type || msg.type || 'text',
-          self: userInfo ? msg.fromId === userInfo.id : false,
+          self: msg.msgContent?.formUserName === userInfo.name,
           username: msg.msgContent?.formUserName || '未知用户',
           fromId: msg.fromId || '',
           time: formatTime(msg.createTime),

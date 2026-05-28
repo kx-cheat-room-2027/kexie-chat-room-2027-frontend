@@ -25,12 +25,13 @@ class WebSocketClient {
     if (this.ws && (this.ws.readyState === WebSocket.OPEN || this.ws.readyState === WebSocket.CONNECTING)) {
       return
     }
-
+    const token = localStorage.getItem('token') || ''
+    const url = token ? `${this.url}?x-token=${token}` : this.url
     this.isManualClose = false
     console.log('[WS] 正在连接:', this.url)
 
     try {
-      this.ws = new WebSocket(this.url)
+      this.ws = new WebSocket(url)
     } catch (e) {
       console.error('[WS] 创建连接失败:', e)
       this.scheduleReconnect()
@@ -128,9 +129,7 @@ class WebSocketClient {
   }
 }
 
-const WS_URL = import.meta.env.DEV
-  ? `ws://${window.location.host}/ws`
-  : `ws://${window.location.hostname}:8081/ws`
+const WS_URL = `ws://localhost:9100/ws`
 
 let wsInstance = null
 
