@@ -3,8 +3,17 @@
 import MessageList from './MessageList.vue'
 import MessageInput from './MessageInput.vue'
 import { useMessage } from '@/mock/useMessage.js'
+import { ref, nextTick } from 'vue'
 
 const { messages, sendMessage } = useMessage()
+const msgListRef = ref(null)
+
+function handleSend(text) {
+  sendMessage(text)
+  nextTick(() => {
+    msgListRef.value?.scrollToBottom()
+  })
+}
 </script>
 
 
@@ -15,9 +24,9 @@ const { messages, sendMessage } = useMessage()
       <div>聊天室</div>
     </div>
 
-    <MessageList :messages="messages" />
+        <MessageList ref="msgListRef" :messages="messages" />
 
-    <MessageInput @send="sendMessage" />
+    <MessageInput @send="handleSend" />
   </div>
 </template>
 

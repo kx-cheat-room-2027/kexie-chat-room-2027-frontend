@@ -55,7 +55,7 @@
 <script setup>
 import { ref, onMounted, computed } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
-import { getSessionList } from '@/api/chat'
+// import { getSessionList } from '@/api/chat'
 import { useAuthStore } from '@/stores/auth'
 
 const router = useRouter()

@@ -1,12 +1,15 @@
 <template>
   <div class="app-container">
-    <!-- 移动端 -->
-    <div v-if="isMobile && !isProfilePage" class="mobile-container">
-      <MobileChatPage />
-    </div>
-    <div v-else-if="isMobile && isProfilePage" class="mobile-profile-container">
-      <slot />
-    </div>
+    <!-- 移动端：没有选中聊天时显示列表，选中后显示聊天内容 -->
+        <div v-if="isMobile && !isProfilePage && !hasChatId" class="mobile-container">
+          <MobileChatPage />
+        </div>
+        <div v-else-if="isMobile && !isProfilePage && hasChatId" class="mobile-container">
+          <slot />
+        </div>
+        <div v-else-if="isMobile && isProfilePage" class="mobile-profile-container">
+          <slot />
+        </div>
 
     <!-- PC端 -->
     <div v-else class="desktop-container">
@@ -33,6 +36,7 @@ const isUserPanelOpen = ref(false)
 provide('isUserPanelOpen', isUserPanelOpen)
 
 const isProfilePage = computed(() => route.path === '/chat/profile')
+const hasChatId = computed(() => route.params.id != null && route.params.id !== '')
 
 function checkMobile() {
   isMobile.value = window.innerWidth < 768

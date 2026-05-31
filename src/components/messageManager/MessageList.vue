@@ -1,8 +1,8 @@
 <!--消息列表-->
 <script setup>
 import MessageItem from "./MessageItem.vue";
-import { useMessage } from "@/mock/useMessage";
-import { ref, nextTick } from "vue";
+import { useMessage } from "@/mock/useMessage.js";
+import { ref, nextTick, onMounted } from "vue";
 
 const messageList = ref(null);
 const SCROLL_THRESHOLD = 100;
@@ -68,9 +68,32 @@ async function fetchHistoryMessages() {
 
 function scrollToBottom() {
   const el = messageList.value;
+  if (!el) return;
   el.scrollTop = el.scrollHeight;
   newMessageCount.value = 0;
 }
+
+// 进入页面自动滚动到底部
+onMounted(() => {
+  nextTick(() => {
+    scrollToBottom();
+  });
+});
+
+// 发送消息后强制滚动到底部
+function sendMessageAndScroll(text) {
+  sendMessage(text);
+  nextTick(() => {
+    scrollToBottom();
+  });
+}
+
+// 暴露给父组件调用
+defineExpose({
+  scrollToBottom,
+  sendMessageAndScroll,
+  receiveNewMessage,
+});
 </script>
 
 <template>
