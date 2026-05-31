@@ -68,6 +68,14 @@ export function getChatRooms() {
     return chatRooms.value.slice().sort((a, b) => b.lastTime - a.lastTime)
 }
 
+/** 模拟接口返回聊天室列表 */
+export async function getSessionList() {
+    return {
+        code: 0,
+        data: getChatRooms()
+    }
+}
+
 /** 返回单个聊天室 */
 export function getChatRoom(roomId) {
     return chatRooms.value.find(room => room.id === roomId)

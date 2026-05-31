@@ -1,8 +1,15 @@
 <template>
   <aside class="user-panel">
+    <button class="close-btn mobile-only" @click="closePanel" title="关闭">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="18" y1="6" x2="6" y2="18"></line>
+        <line x1="6" y1="6" x2="18" y2="18"></line>
+      </svg>
+    </button>
     <div class="panel-header">
       <div class="user-avatar-large">
-        <span class="avatar-icon">👤</span>
+        <img v-if="user.avatar" :src="user.avatar" class="avatar-img" alt="avatar" />
+        <span v-else class="avatar-icon">👤</span>
       </div>
       <div class="user-info">
         <h3 class="user-title">{{ user.name }}</h3>
@@ -40,10 +47,15 @@
 </template>
 
 <script setup>
-import { reactive } from "vue";
+import { reactive, inject } from "vue";
 
-const user = {
-  name: "用户名",
+const user = inject("selectedUser", { name: "用户名" });
+const isUserPanelOpen = inject("isUserPanelOpen");
+
+const closePanel = () => {
+  if (isUserPanelOpen) {
+    isUserPanelOpen.value = false;
+  }
 };
 
 const settings = reactive({
@@ -63,6 +75,35 @@ const settings = reactive({
   padding: 32px 24px;
   box-shadow: -2px 0 20px rgba(0, 0, 0, 0.05);
   flex-shrink: 0;
+  position: relative;
+}
+
+.close-btn {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  background: none;
+  border: none;
+  color: #8b7b5e;
+  cursor: pointer;
+  padding: 4px;
+}
+
+.mobile-only {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .user-panel {
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+  }
+  .mobile-only {
+    display: block;
+  }
 }
 
 .panel-header {
@@ -87,6 +128,13 @@ const settings = reactive({
 .avatar-icon {
   font-size: 40px;
   color: #b5a88e;
+}
+
+.avatar-img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
 }
 
 .avatar-camera {

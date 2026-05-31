@@ -1,7 +1,12 @@
 <template>
   <div class="chat-header">
     <div class="room-info">
-      <h2 class="room-name">聊天室</h2>
+      <button class="back-btn mobile-only" @click="goBack" title="返回">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="15 18 9 12 15 6"></polyline>
+        </svg>
+      </button>
+      <h2 class="room-name">{{ currentRoomName }}</h2>
     </div>
     <div class="header-actions">
       <button class="action-btn">
@@ -17,24 +22,29 @@
           <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
         </svg>
       </button>
-      <button class="action-btn" @click="toggleUserPanel">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"></circle><circle cx="12" cy="5" r="1"></circle><circle cx="12" cy="19" r="1"></circle></svg>
-      </button>
     </div>
   </div>
 </template>
 
 <script setup>
-import { inject } from 'vue'
+import { inject, computed } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import { useSettingsStore } from '@/stores/settings'
+import { getChatRoom } from '@/mock/chatRoom'
 
+const route = useRoute()
+const router = useRouter()
 const settingsStore = useSettingsStore()
 const isUserPanelOpen = inject('isUserPanelOpen')
 
-const toggleUserPanel = () => {
-  if (isUserPanelOpen) {
-    isUserPanelOpen.value = !isUserPanelOpen.value
-  }
+const currentRoomName = computed(() => {
+  if (!route.params.id) return "未选择聊天"
+  const room = getChatRoom(route.params.id)
+  return room ? room.name : "聊天室"
+})
+
+const goBack = () => {
+  router.push('/chat')
 }
 </script>
 
@@ -50,7 +60,8 @@ const toggleUserPanel = () => {
 
 .room-info {
   display: flex;
-  flex-direction: column;
+  align-items: center;
+  gap: 8px;
 }
 
 .room-name {
@@ -82,5 +93,27 @@ const toggleUserPanel = () => {
 .action-btn svg {
   width: 22px;
   height: 22px;
+}
+
+.back-btn {
+  border: none;
+  background: none;
+  cursor: pointer;
+  padding: 4px;
+  color: #8b7b5e;
+  transition: color 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mobile-only {
+  display: none; /* 默认隐藏 */
+}
+
+@media (max-width: 768px) {
+  .mobile-only {
+    display: flex; /* 移动端显示 */
+  }
 }
 </style>

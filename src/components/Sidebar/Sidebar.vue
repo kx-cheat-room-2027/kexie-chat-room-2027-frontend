@@ -31,7 +31,7 @@
       <div 
         v-for="room in filteredRooms" 
         :key="room.id" 
-        class="session-item"
+        :class="['session-item', { active: currentRoomId === room.id }]"
         @click="selectRoom(room)"
       >
         <div class="session-avatar-wrapper">
@@ -53,14 +53,11 @@
 </template>
 
 <script setup>
-import { ref, onMounted, computed, watch } from "vue";
+import { ref, onMounted, computed, watch, nextTick } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import { useAuthStore } from "@/stores/auth";
 import { useSettingsStore } from "@/stores/settings";
-
-async function getSessionList() {
-  return [];
-}
+import { getSessionList } from "@/mock/chatRoom";
 
 const emit = defineEmits(["navChange", "roomSelect"]);
 
@@ -91,6 +88,15 @@ const fetchSessionData = async () => {
     if (res.code === 0) {
       // 初始化时就进行排序
       chatRooms.value = res.data.sort((a, b) => Number(b.lastTime) - Number(a.lastTime));
+      
+      // 一进页面（PC端）如果没有任何选中项，则默认选中当前列表最上面一条
+      nextTick(() => {
+        if (!currentRoomId.value && route.path === '/chat') {
+          if (filteredRooms.value.length > 0) {
+            router.replace(`/chat/${filteredRooms.value[0].id}`);
+          }
+        }
+      });
     }
   } catch (error) {
     console.error("获取会话列表失败:", error);
@@ -179,12 +185,27 @@ onMounted(() => {
   fetchSessionData();
 });
 
-// 监听路由变化，当进入一个房间时，清空该房间的未读数
+// 记录上一次访问的房间 ID，避免退回大厅时内容丢失
+const lastVisitedRoomId = ref(null);
+
+// 监听路由变化，当进入一个房间时，清空该房间的未读数，并且记录访问轨迹
 watch(currentRoomId, (newId, oldId) => {
   if (newId && newId !== oldId) {
+    lastVisitedRoomId.value = newId;
     const room = chatRooms.value.find(r => r.id === newId);
     if (room && room.unreadCount > 0) {
       room.unreadCount = 0;
+    }
+  }
+}, { immediate: true });
+
+// 专门处理从其他页面（如 Profile）退回 /chat 时的情况
+watch(() => route.path, (newPath) => {
+  if (newPath === '/chat') {
+    if (lastVisitedRoomId.value) {
+      router.replace(`/chat/${lastVisitedRoomId.value}`);
+    } else if (filteredRooms.value.length > 0) {
+      router.replace(`/chat/${filteredRooms.value[0].id}`);
     }
   }
 });
@@ -236,6 +257,14 @@ const formatTime = (timeStr) => {
 const handleNavClick = (id) => {
   activeNav.value = id;
   emit("navChange", id);
+  // 切换列表导航时，也默认选中该列表下最新的那一条
+  nextTick(() => {
+    if (filteredRooms.value.length > 0) {
+      router.replace(`/chat/${filteredRooms.value[0].id}`);
+    } else {
+      router.replace('/chat');
+    }
+  });
 };
 
 const selectRoom = (room) => {
@@ -248,7 +277,12 @@ const selectRoom = (room) => {
 
 const toggleProfile = () => {
   if (route.path === "/chat/profile") {
-    router.push("/chat");
+    // 从个人页退出时，如果有上次的记录就回到上次记录中，否则回大厅让他自动重定向
+    if (lastVisitedRoomId.value) {
+      router.push(`/chat/${lastVisitedRoomId.value}`);
+    } else {
+      router.push("/chat");
+    }
   } else {
     router.push("/chat/profile");
   }
@@ -397,6 +431,11 @@ const toggleProfile = () => {
 
 .session-item:hover {
   background: rgba(255, 255, 255, 0.4);
+}
+
+.session-item.active {
+  background: rgba(255, 255, 255, 0.7);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
 .session-avatar-wrapper {
