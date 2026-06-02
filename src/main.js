@@ -9,5 +9,9 @@ import { createPinia } from "pinia";
 const app = createApp(App)
 app.use(createPinia())  // Pinia 必须在 mount 之前注册
 app.use(ElementPlus)
+<<<<<<< HEAD
+=======
+app.use(pinia)
+>>>>>>> 23333a7 (feat: 完善聊天交互与移动端适配)
 app.use(router)
 app.mount('#app')

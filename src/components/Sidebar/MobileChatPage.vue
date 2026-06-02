@@ -118,9 +118,10 @@ const handleNavClick = (id) => {
   activeNav.value = id
 }
 
-const selectRoom = (roomId) => {
   // 移动端选中聊天室后，通常要跳转到聊天详情页面
-  console.log("Mobile selected room:", roomId)
+  // console.log("Mobile selected room:", roomId)
+const selectRoom = (roomId) => {
+  router.push(`/chat/${roomId}`)
 }
 
 const toggleProfile = () => {

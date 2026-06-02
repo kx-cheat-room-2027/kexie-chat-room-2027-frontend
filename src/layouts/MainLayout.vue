@@ -1,11 +1,12 @@
 <template>
   <div class="app-container">
     <!-- 移动端 -->
-    <div v-if="isMobile && !isProfilePage" class="mobile-container">
+    <div v-if="isMobile && route.path === '/chat'" class="mobile-container">
       <MobileChatPage />
     </div>
-    <div v-else-if="isMobile && isProfilePage" class="mobile-profile-container">
+    <div v-else-if="isMobile && route.path !== '/chat'" class="mobile-chat-detail-container">
       <slot />
+      <UserPanel v-if="isUserPanelOpen" />
     </div>
 
     <!-- PC端 -->
@@ -29,8 +30,21 @@ import { MobileChatPage, Sidebar, UserPanel } from '@/components/Sidebar'
 const route = useRoute()
 const isMobile = ref(false)
 const isUserPanelOpen = ref(false)
+const selectedUser = ref({ name: "用户名" })
+
+const openUserPanel = (user) => {
+  // 再次点击相同头像时，就关闭该面板
+  if (isUserPanelOpen.value && selectedUser.value.name === user.name) {
+    isUserPanelOpen.value = false
+  } else {
+    selectedUser.value = user
+    isUserPanelOpen.value = true
+  }
+}
 
 provide('isUserPanelOpen', isUserPanelOpen)
+provide('selectedUser', selectedUser)
+provide('openUserPanel', openUserPanel)
 
 const isProfilePage = computed(() => route.path === '/chat/profile')
 
@@ -59,8 +73,8 @@ onUnmounted(() => {
   height: 100vh;
 }
 .main-content {
-  flex: 1;           /* 占据 Sidebar 和 UserPanel 之间的剩余宽度 */
-  overflow: hidden;  /* 防止内部 100vh 撑出滚动条 */
+  flex: 1;           
+  overflow: hidden;  
   display: flex;
   flex-direction: column;
 }
@@ -69,9 +83,11 @@ onUnmounted(() => {
   overflow-y: auto;
 }
 
-.mobile-profile-container {
+.mobile-chat-detail-container {
   height: 100vh;
-  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
   background: #fff8f0;
+  position: relative;
 }
 </style>

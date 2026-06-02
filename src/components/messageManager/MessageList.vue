@@ -1,11 +1,21 @@
 <!--消息列表-->
 <script setup>
+import { ref, computed, nextTick, inject, watch } from "vue";
+import { useRoute } from "vue-router";
 import MessageItem from "./MessageItem.vue";
+<<<<<<< HEAD
 import { useChatStore } from "@/stores/chat";
 import { ref, nextTick, computed, onMounted } from "vue";
 
 const chatStore = useChatStore();
 const messages = computed(() => chatStore.sortedMessages);
+=======
+import { useMessage } from "@/mock/useMessage";
+
+const route = useRoute();
+const roomIdRef = computed(() => route.params.id);
+const isUserPanelOpen = inject('isUserPanelOpen', null);
+>>>>>>> 23333a7 (feat: 完善聊天交互与移动端适配)
 
 const messageList = ref(null);
 const SCROLL_THRESHOLD = 100;
@@ -13,7 +23,12 @@ const loading = computed(() => chatStore.loading);
 const noMoreHistory = ref(false);
 const isAtBottom = ref(true);
 const newMessageCount = ref(0);
+<<<<<<< HEAD
 const currentPage = ref(1);
+=======
+const { messages, createHistoryMessages, createNewMessage } =
+  useMessage(roomIdRef);
+>>>>>>> 23333a7 (feat: 完善聊天交互与移动端适配)
 
 function onScroll() {
   if (!messageList.value) return;
@@ -54,6 +69,7 @@ function receiveNewMessage(msg) {
 
 function scrollToBottom() {
   const el = messageList.value;
+<<<<<<< HEAD
   if (el) {
     el.scrollTop = el.scrollHeight;
     newMessageCount.value = 0;
@@ -64,6 +80,21 @@ onMounted(() => {
   nextTick(() => {
     scrollToBottom();
   });
+=======
+  if(el) {
+    el.scrollTop = el.scrollHeight;
+  }
+  newMessageCount.value = 0;
+}
+
+// 解决手机端弹出版面再关闭后滑动不便的bug
+watch(() => isUserPanelOpen?.value, (val) => {
+  if (!val) {
+    nextTick(() => {
+      scrollToBottom();
+    });
+  }
+>>>>>>> 23333a7 (feat: 完善聊天交互与移动端适配)
 });
 </script>
 
