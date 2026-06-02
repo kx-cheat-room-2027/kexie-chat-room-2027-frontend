@@ -1,6 +1,18 @@
 <template>
   <div class="app-container">
-    <!-- 移动端 -->
+    <!-- 保留：feature-chat-improvement 移动端逻辑（已注释）
+    <div v-if="isMobile && !isProfilePage && !hasChatId" class="mobile-container">
+      <MobileChatPage />
+    </div>
+    <div v-else-if="isMobile && !isProfilePage && hasChatId" class="mobile-container">
+      <slot />
+    </div>
+    <div v-else-if="isMobile && isProfilePage" class="mobile-profile-container">
+      <slot />
+    </div>
+    -->
+
+    <!-- 生效：main 移动端逻辑 -->
     <div v-if="isMobile && route.path === '/chat'" class="mobile-container">
       <MobileChatPage />
     </div>
@@ -47,6 +59,7 @@ provide('selectedUser', selectedUser)
 provide('openUserPanel', openUserPanel)
 
 const isProfilePage = computed(() => route.path === '/chat/profile')
+const hasChatId = computed(() => route.params.id != null && route.params.id !== '')
 
 function checkMobile() {
   isMobile.value = window.innerWidth < 768

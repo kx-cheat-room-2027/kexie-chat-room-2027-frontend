@@ -1,19 +1,31 @@
 <!--主容器-->
 <script setup>
-<<<<<<< HEAD
 import { onMounted, onUnmounted, computed } from 'vue'
-=======
-import { computed } from 'vue'
-import { useRoute } from 'vue-router'
-import ChatHeader from './ChatHeader.vue'
->>>>>>> 23333a7 (feat: 完善聊天交互与移动端适配)
 import MessageList from './MessageList.vue'
 import MessageInput from './MessageInput.vue'
 import { useChatStore } from '@/stores/chat'
 
-<<<<<<< HEAD
-const chatStore = useChatStore()
+// ─────────────── 保留：23333a7 分支代码（已注释）───────────────
+// import { useRoute } from 'vue-router'
+// import ChatHeader from './ChatHeader.vue'
+// const route = useRoute()
+// const roomIdRef = computed(() => route.params.id)
+// const { messages: roomMessages, sendMessage: roomSend } = useMessage(roomIdRef)
 
+// ─────────────── 保留：feature-chat-improvement / main 代码（已注释）───────────────
+// import { useMessage } from '@/mock/useMessage.js'
+// import { ref, nextTick } from 'vue'
+// const { messages: mockMessages, sendMessage: mockSend } = useMessage()
+// const msgListRef = ref(null)
+// function handleSendMock(text) {
+//   mockSend(text)
+//   nextTick(() => {
+//     msgListRef.value?.scrollToBottom()
+//   })
+// }
+
+// ─────────────── 当前生效：HEAD（WebSocket）───────────────
+const chatStore = useChatStore()
 const messages = computed(() => chatStore.sortedMessages)
 
 function handleSend(text) {
@@ -28,29 +40,25 @@ onMounted(() => {
 onUnmounted(() => {
   chatStore.disconnectWS()
 })
-=======
-const route = useRoute()
-const roomIdRef = computed(() => route.params.id)
-
-const { messages, sendMessage } = useMessage(roomIdRef)
->>>>>>> 23333a7 (feat: 完善聊天交互与移动端适配)
 </script>
-
-
 
 <template>
   <div class="chat">
-<<<<<<< HEAD
+    <!-- 保留：23333a7 的 ChatHeader（已注释）
+    <ChatHeader />
+    -->
+
+    <!-- 生效：HEAD 的原生 header + WebSocket 状态 -->
     <div class="header">
       <div>聊天室</div>
       <div class="ws-status" :class="{ connected: chatStore.isConnected }">
         {{ chatStore.isConnected ? '已连接' : '未连接' }}
       </div>
     </div>
-=======
-    <ChatHeader />
->>>>>>> 23333a7 (feat: 完善聊天交互与移动端适配)
 
+    <!-- 保留：feature-chat-improvement 的 MessageList（已注释）
+    <MessageList ref="msgListRef" :messages="messages" />
+    -->
     <MessageList />
 
     <MessageInput @send="handleSend" />
@@ -63,7 +71,6 @@ const { messages, sendMessage } = useMessage(roomIdRef)
   flex-direction: column;
   height: 100vh;
 }
-<<<<<<< HEAD
 
 .header {
   display: flex;
@@ -94,6 +101,3 @@ const { messages, sendMessage } = useMessage(roomIdRef)
   color: #2e7d32;
 }
 </style>
-=======
-</style>
->>>>>>> 23333a7 (feat: 完善聊天交互与移动端适配)
