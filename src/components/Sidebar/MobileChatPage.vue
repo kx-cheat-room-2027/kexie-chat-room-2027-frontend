@@ -8,16 +8,21 @@
         </div>
         <button class="user-avatar-btn" @click="toggleProfile">
           <div class="user-avatar">
-            <img v-if="authStore.userInfo?.avatar" :src="authStore.userInfo.avatar" class="avatar-img" alt="avatar" />
+            <img
+              v-if="authStore.userInfo?.avatar"
+              :src="authStore.userInfo.avatar"
+              class="avatar-img"
+              alt="avatar"
+            />
             <span v-else class="avatar-icon">👤</span>
           </div>
         </button>
       </div>
     </div>
-    
+
     <nav class="sidebar-nav">
-      <button 
-        v-for="item in navItems" 
+      <button
+        v-for="item in navItems"
         :key="item.id"
         :class="['nav-item', { active: activeNav === item.id }]"
         @click="handleNavClick(item.id)"
@@ -28,16 +33,16 @@
     </nav>
 
     <div class="session-list">
-      <div 
-        v-for="room in filteredRooms" 
-        :key="room.id" 
+      <div
+        v-for="room in filteredRooms"
+        :key="room.id"
         class="session-item"
         @click="selectRoom(room.id)"
       >
         <div class="session-avatar-wrapper">
           <img :src="room.avatar" class="session-avatar" alt="avatar" />
           <div v-if="room.unreadCount > 0" class="unread-badge">
-            {{ room.unreadCount > 99 ? '99+' : room.unreadCount }}
+            {{ room.unreadCount > 99 ? "99+" : room.unreadCount }}
           </div>
         </div>
         <div class="session-content">
@@ -53,90 +58,90 @@
 </template>
 
 <script setup>
-import { ref, onMounted, computed } from 'vue'
-import { useRouter, useRoute } from 'vue-router'
-import { getSessionList } from '@/api/chat'
-import { useAuthStore } from '@/stores/auth'
+import { ref, onMounted, computed } from "vue";
+import { useRouter, useRoute } from "vue-router";
+// import { getSessionList } from '@/api/chat'
+import { useAuthStore } from "@/stores/auth";
 
-const router = useRouter()
-const route = useRoute()
-const authStore = useAuthStore()
+const router = useRouter();
+const route = useRoute();
+const authStore = useAuthStore();
 
-const activeNav = ref('chatroom')
+const activeNav = ref("chatroom");
 
 const navItems = [
-  { id: 'chatroom', icon: '👥', text: '聊天室' },
-  { id: 'friends', icon: '👤', text: '好友' }
-]
+  { id: "chatroom", icon: "👥", text: "聊天室" },
+  { id: "friends", icon: "👤", text: "好友" },
+];
 
-const chatRooms = ref([])
-const loading = ref(false)
+const chatRooms = ref([]);
+const loading = ref(false);
 
 const fetchSessionData = async () => {
-  loading.value = true
+  loading.value = true;
   try {
-    const res = await getSessionList()
+    const res = await getSessionList();
     if (res.code === 0) {
-      chatRooms.value = res.data
+      chatRooms.value = res.data;
     }
   } catch (error) {
-    console.error("获取会话列表失败:", error)
+    console.error("获取会话列表失败:", error);
   } finally {
-    loading.value = false
+    loading.value = false;
   }
-}
+};
 
 onMounted(() => {
-  fetchSessionData()
-})
+  fetchSessionData();
+});
 
 const filteredRooms = computed(() => {
-  if (activeNav.value === 'chatroom') {
-    return chatRooms.value.filter(room => room.isGroup)
+  if (activeNav.value === "chatroom") {
+    return chatRooms.value.filter((room) => room.isGroup);
   } else {
-    return chatRooms.value.filter(room => !room.isGroup)
+    return chatRooms.value.filter((room) => !room.isGroup);
   }
-})
+});
 
 const formatTime = (timeStr) => {
-  if (!timeStr) return ""
-  let timestamp = Number(timeStr)
+  if (!timeStr) return "";
+  let timestamp = Number(timeStr);
   if (isNaN(timestamp)) {
-    return timeStr
+    return timeStr;
   }
   if (timeStr.toString().length === 10) {
-    timestamp *= 1000
+    timestamp *= 1000;
   }
-  const date = new Date(timestamp)
-  if (isNaN(date.getTime())) return timeStr
-  const hours = date.getHours().toString().padStart(2, "0")
-  const minutes = date.getMinutes().toString().padStart(2, "0")
-  return `${hours}:${minutes}`
-}
+  const date = new Date(timestamp);
+  if (isNaN(date.getTime())) return timeStr;
+  const hours = date.getHours().toString().padStart(2, "0");
+  const minutes = date.getMinutes().toString().padStart(2, "0");
+  return `${hours}:${minutes}`;
+};
 
 const handleNavClick = (id) => {
-  activeNav.value = id
-}
+  activeNav.value = id;
+};
 
 const selectRoom = (roomId) => {
   // 移动端选中聊天室后，通常要跳转到聊天详情页面
-  console.log("Mobile selected room:", roomId)
-}
+  console.log("Mobile selected room:", roomId);
+};
 
 const toggleProfile = () => {
-  if (route.path === '/chat/profile') {
-    router.push('/chat')
+  if (route.path === "/chat/profile") {
+    router.push("/chat");
   } else {
-    router.push('/chat/profile')
+    router.push("/chat/profile");
   }
-}
+};
 </script>
 
 <style scoped>
 .mobile-chat-page {
   min-height: 100vh;
   height: 100vh;
-  background-color: #FFEFD5;
+  background-color: #ffefd5;
   display: flex;
   flex-direction: column;
   padding: clamp(20px, 4vw, 32px) clamp(16px, 3vw, 24px);
@@ -162,13 +167,13 @@ const toggleProfile = () => {
 .logo-text {
   font-size: 24px;
   font-weight: 700;
-  color: #5D4E37;
+  color: #5d4e37;
   letter-spacing: -0.5px;
 }
 
 .logo-status {
   font-size: 10px;
-  color: #8B7B5E;
+  color: #8b7b5e;
   margin-top: 2px;
   text-transform: uppercase;
   letter-spacing: 1px;
@@ -185,7 +190,7 @@ const toggleProfile = () => {
   width: 44px;
   height: 44px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #E8DDC8 0%, #D4C9A8 100%);
+  background: linear-gradient(135deg, #e8ddc8 0%, #d4c9a8 100%);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -222,7 +227,7 @@ const toggleProfile = () => {
   cursor: pointer;
   transition: all 0.3s ease;
   font-size: 14px;
-  color: #5D4E37;
+  color: #5d4e37;
   text-align: left;
 }
 
@@ -231,7 +236,7 @@ const toggleProfile = () => {
 }
 
 .nav-item.active {
-  background: linear-gradient(135deg, #D99E59 0%, #C48843 100%);
+  background: linear-gradient(135deg, #d99e59 0%, #c48843 100%);
   color: white;
   box-shadow: 0 4px 15px rgba(217, 158, 89, 0.4);
 }
@@ -303,7 +308,7 @@ const toggleProfile = () => {
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 2px solid #FFEFD5;
+  border: 2px solid #ffefd5;
 }
 
 .session-content {
@@ -322,7 +327,7 @@ const toggleProfile = () => {
 
 .session-name {
   font-weight: 600;
-  color: #5D4E37;
+  color: #5d4e37;
   font-size: 14px;
   white-space: nowrap;
   overflow: hidden;
@@ -331,14 +336,14 @@ const toggleProfile = () => {
 
 .session-time {
   font-size: 12px;
-  color: #A4967F;
+  color: #a4967f;
   flex-shrink: 0;
 }
 
 .message-preview {
   margin: 0;
   font-size: 13px;
-  color: #8B7B5E;
+  color: #8b7b5e;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
