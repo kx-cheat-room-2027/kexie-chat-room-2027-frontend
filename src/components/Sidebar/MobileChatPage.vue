@@ -58,10 +58,10 @@
 </template>
 
 <script setup>
-import { ref, onMounted, computed } from "vue";
-import { useRouter, useRoute } from "vue-router";
-// import { getSessionList } from '@/api/chat'
-import { useAuthStore } from "@/stores/auth";
+import { ref, onMounted, computed } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
+import { getSessionList } from '@/mock/chatRoom'
+import { useAuthStore } from '@/stores/auth'
 
 const router = useRouter();
 const route = useRoute();
@@ -123,10 +123,11 @@ const handleNavClick = (id) => {
   activeNav.value = id;
 };
 
-const selectRoom = (roomId) => {
   // 移动端选中聊天室后，通常要跳转到聊天详情页面
-  console.log("Mobile selected room:", roomId);
-};
+  // console.log("Mobile selected room:", roomId)
+const selectRoom = (roomId) => {
+  router.push(`/chat/${roomId}`)
+}
 
 const toggleProfile = () => {
   if (route.path === "/chat/profile") {
