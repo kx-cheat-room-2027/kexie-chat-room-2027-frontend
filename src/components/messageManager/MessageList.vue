@@ -1,17 +1,33 @@
 <!--消息列表-->
 <script setup>
+import { ref, computed, nextTick, inject, watch, onMounted } from "vue";
+import { useRoute } from "vue-router";
 import MessageItem from "./MessageItem.vue";
-import { useMessage } from "@/mock/useMessage.js";
-import { ref, nextTick, onMounted } from "vue";
+import { useChatStore } from "@/stores/chat";
+
+// ─────────────── 保留：feature-chat-improvement（已注释）───────────────
+// import { useMessage } from "@/mock/useMessage.js";
+// import { ref, nextTick, onMounted } from "vue";
+
+// ─────────────── 保留：23333a7（已注释）───────────────
+// import { useMessage } from "@/mock/useMessage";
+// const route = useRoute();
+// const roomIdRef = computed(() => route.params.id);
+// const isUserPanelOpen = inject('isUserPanelOpen', null);
+
+const chatStore = useChatStore();
+const messages = computed(() => chatStore.sortedMessages);
 
 const messageList = ref(null);
 const SCROLL_THRESHOLD = 100;
-const loading = ref(false);
+const loading = computed(() => chatStore.loading);
 const noMoreHistory = ref(false);
 const isAtBottom = ref(true);
 const newMessageCount = ref(0);
-const { messages, createHistoryMessages, createNewMessage, sendMessage } =
-  useMessage();
+const currentPage = ref(1);
+
+// ─────────────── 保留：23333a7（已注释）───────────────
+// const { messages, createHistoryMessages, createNewMessage } = useMessage(roomIdRef);
 
 function onScroll() {
   if (!messageList.value) return;
@@ -25,29 +41,22 @@ function onScroll() {
 async function loadMoreHistory() {
   if (loading.value || noMoreHistory.value) return;
 
-  loading.value = true;
-
   const prevScrollHeight = messageList.value.scrollHeight;
 
-  const historyMessages = await createHistoryMessages();
+  currentPage.value++;
+  const prevLength = messages.value.length;
+  await chatStore.loadHistory(currentPage.value, 20);
 
-  if (historyMessages.length === 0) {
+  if (messages.value.length === prevLength) {
     noMoreHistory.value = true;
   } else {
-    messages.value.unshift(...historyMessages);
-
     await nextTick();
-
     const newScrollHeight = messageList.value.scrollHeight;
-
     messageList.value.scrollTop += newScrollHeight - prevScrollHeight;
   }
-
-  loading.value = false;
 }
 
-function receiveNewMessage(text) {
-  createNewMessage(text);
+function receiveNewMessage(msg) {
   if (isAtBottom.value) {
     nextTick(() => {
       scrollToBottom();
@@ -57,48 +66,65 @@ function receiveNewMessage(text) {
   }
 }
 
-async function fetchHistoryMessages() {
-  // 模拟接口返回数据，真实项目替换成接口请求
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve([{ id: Date.now(), text: "历史消息" }]);
-    }, 500);
-  });
-}
-
 function scrollToBottom() {
   const el = messageList.value;
-  if (!el) return;
-  el.scrollTop = el.scrollHeight;
-  newMessageCount.value = 0;
+  
+  // ─── 生效：HEAD ───
+  if (el) {
+    el.scrollTop = el.scrollHeight;
+    newMessageCount.value = 0;
+  }
+  
+  // ─── 保留：feature-chat-improvement 实现（已注释）───
+  // if (!el) return;
+  // el.scrollTop = el.scrollHeight;
+  // newMessageCount.value = 0;
 }
 
-// 进入页面自动滚动到底部
+// ─────────────── 保留：feature-chat-improvement（已注释）───────────────
+// // 进入页面自动滚动到底部
+// onMounted(() => {
+//   nextTick(() => {
+//     scrollToBottom();
+//   });
+// });
+// 
+// // 发送消息后强制滚动到底部
+// function sendMessageAndScroll(text) {
+//   sendMessage(text);
+//   nextTick(() => {
+//     scrollToBottom();
+//   });
+// }
+// 
+// // 暴露给父组件调用
+// defineExpose({
+//   scrollToBottom,
+//   sendMessageAndScroll,
+//   receiveNewMessage,
+// });
+
+// ─── 生效：HEAD ───
 onMounted(() => {
   nextTick(() => {
     scrollToBottom();
   });
 });
 
-// 发送消息后强制滚动到底部
-function sendMessageAndScroll(text) {
-  sendMessage(text);
-  nextTick(() => {
-    scrollToBottom();
-  });
-}
-
-// 暴露给父组件调用
-defineExpose({
-  scrollToBottom,
-  sendMessageAndScroll,
-  receiveNewMessage,
-});
+// ─────────────── 保留：23333a7（已注释）───────────────
+// // 解决手机端弹出版面再关闭后滑动不便的bug
+// watch(() => isUserPanelOpen?.value, (val) => {
+//   if (!val) {
+//     nextTick(() => {
+//       scrollToBottom();
+//     });
+//   }
+// });
 </script>
 
 <template>
-  <div v-if="loading" class="loading-top">加载中...</div>
-  <div v-else-if="noMoreHistory" class="loading-top">没有更多消息</div>
+  <div v-if="loading && messages.length === 0" class="loading-top">加载中...</div>
+  <div v-else-if="noMoreHistory && messages.length > 0" class="loading-top">没有更多消息</div>
   <div class="list" ref="messageList" @scroll="onScroll">
     <MessageItem v-for="msg in messages" :key="msg.id" :msg="msg" />
   </div>
@@ -131,5 +157,23 @@ defineExpose({
 }
 ::-webkit-scrollbar-thumb:hover {
   background: #e88910;
+}
+.loading-top {
+  text-align: center;
+  padding: 10px;
+  color: #999;
+  font-size: 12px;
+}
+.new-message-tip {
+  position: absolute;
+  bottom: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #fe9a1a;
+  color: white;
+  padding: 5px 15px;
+  border-radius: 15px;
+  cursor: pointer;
+  font-size: 12px;
 }
 </style>

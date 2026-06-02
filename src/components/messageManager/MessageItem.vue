@@ -1,17 +1,29 @@
 <!--单条消息-->
 <script setup>
+import { inject } from "vue";
+
 const props =defineProps({
   msg: Object,
 });
 
+const openUserPanel = inject("openUserPanel");
+
+const handleAvatarClick = () => {
+  if (!props.msg.self && openUserPanel) {
+    openUserPanel({ 
+      name: props.msg.username || "对方", 
+      avatar: props.msg.avatar || "https://picsum.photos/200/200" 
+    });
+  }
+};
 </script>
 
 <template>
   <div class="wrapper" :class="msg.self ? 'right' : 'left'">
     <div class="row">
-      <div class="avatar">
+      <div class="avatar" style="cursor: pointer;" @click="handleAvatarClick">
         <span>{{ msg.username }}</span>
-        <img src="https://picsum.photos/200/200" alt="" />
+        <img :src="msg.avatar || 'https://picsum.photos/200/200'" alt="" />
       </div>
       <div class="main" :class="msg.self ? 'right' : 'left'">
         <div class="bubble" :class="msg.self ? 'bubble-right' : 'bubble-left'">
